@@ -9,15 +9,17 @@
 #include "backends/imgui_impl_glfw.h"
 #include "backends/imgui_impl_opengl3.h"
 #include <GLFW/glfw3.h>
+#include "nfd.h"
 
 class C32GCodeUI {
     GLFWwindow* pWindow = nullptr;
+    nfdchar_t*  pSelectedDXF_filepath = nullptr;
     ImGuiViewport * pViewport{};
     void initialize_imgui_library() const;
 public:
 
     void Dockspace();
-    void MainMenu() const;
+    void MainMenu();
     static void NewFrame();
     static void DrawData();
     void Render();

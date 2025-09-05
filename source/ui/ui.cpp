@@ -6,6 +6,7 @@
 
 #include "spdlog/spdlog.h"
 
+
 void C32GCodeUI::initialize_imgui_library() const {
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -58,15 +59,16 @@ void C32GCodeUI::NewFrame() {
     ImGui::NewFrame();
 }
 
-void C32GCodeUI::MainMenu() const {
+void C32GCodeUI::MainMenu() {
     if (ImGui::BeginMainMenuBar()) {
         if (ImGui::BeginMenu("File")) {
             if (ImGui::MenuItem("New", "Ctrl+N")) {}
             if (ImGui::MenuItem("Open DXF", "Ctrl+O")) {
-                //__load_vdx_file();
-            }
-            if (ImGui::MenuItem("Open FRW", "Ctrl+F")) {
-                //__load_frw_file();
+                nfdresult_t result = NFD_OpenDialog("dxf", nullptr, &this->pSelectedDXF_filepath);
+                if (result == NFD_OKAY && this->pSelectedDXF_filepath) {
+                    //__parse_dxf_file(this->pSelectedDXF_filepath);
+                    //plateStatsDirty = true;
+                }
             }
             if (ImGui::MenuItem("Load Plate Material", "Ctrl+M")) {
                 //nfdchar_t* path = nullptr;
@@ -84,10 +86,6 @@ void C32GCodeUI::MainMenu() const {
             ImGui::EndMenu();
         }
         if (ImGui::BeginMenu("View")) {
-            //ImGui::MenuItem("Show Demo Window", nullptr, &show_demo_window);
-            //ImGui::MenuItem("DXF Viewer", nullptr, &show_dxf_viewer);
-            //ImGui::MenuItem("Tools Window", nullptr, &show_tools_window);
-            //ImGui::MenuItem("Properties Window", nullptr, &show_properties_window);
             ImGui::EndMenu();
         }
         ImGui::EndMainMenuBar();
